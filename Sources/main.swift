@@ -1,8 +1,6 @@
 import Foundation
 import Socket
 import SwiftProtobuf
-import KituraRequest
-
 
 
 var host : String!
@@ -10,7 +8,7 @@ var port : UInt32!
 var userId : Data!
 var sessionId : Data!
 var baseURL : String = "https://auth-vt2-beta.wala.vn/vt/r/"
-var tel : String = "841234567888"
+var tel : String = "841645352285"
 var pass : String = "a"
 var id : UInt64 = 0
 var deltalTime : Double!
@@ -34,7 +32,6 @@ func sendLoginTcp(){
         let byteSend = try! socket.write(from: msg.get_data()!)
         debugPrint("Did Send \(byteSend) byte Login")
     }
-    
 }
 
 func getListChat(){
@@ -51,7 +48,7 @@ func getListChat(){
 func guiTinNhan(chatId : Data){
     
     var textMsg = Comm_TextMessage()
-    textMsg.text = "test \(deltalTime!)"
+    textMsg.text = ":D"
     textMsg.hasEmoticon = false
     textMsg.hasLink = false
     let textMsgData = try!  textMsg.serializeProtobuf()
@@ -106,10 +103,12 @@ func processReply(rep : CommMessage,reType : Int32,requestID : UInt64){
             if let repChat = rep.getExtensionValue(ext: Comm_ListChats.Extensions.Comm_Reply_id){
                 debugPrint("Có \(repChat.chats.count) Cuộc hội thoại")
                 for chat in repChat.chats{
-                    if(chat.name == "889"){
+                    let userIdDecode = chat.chatId.uuid_encode
+                    let userIdDecodeString = String(data: userIdDecode, encoding: String.Encoding.utf8)
+                    if("EecbbqZ0Yn6rzQAMKYPAfQ" == userIdDecodeString){
                         guiTinNhan(chatId: chat.chatId)
-                        
                     }
+                    
                 }
                 
             }
